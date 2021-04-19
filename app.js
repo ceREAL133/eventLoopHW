@@ -21,89 +21,80 @@ awake(true, (err, message)=>{
             console.warn(err);
         }
 
-        checkFridge(isFood, (err, message) => {
-            setTimeout(() => {
-                
-                if (!err) {
-                    console.log(message); 
-                    programming(time, (err, message) => {
+        checkFridge(isFood, (err, message) => {   
+            if (!err) {
+                console.log(message); 
+                programming(time, (err, message) => {
+                    if (!err) {
+                        console.log(message);
+                    } else{
+                        console.warn(message);
+                    }
+                    sleepOrAnime(phoneCharge, (err, message) => {
                         if (!err) {
                             console.log(message);
-
                         } else{
-
-                            console.warn(message);
+                            console.log(err);
                         }
-                        sleepOrAnime(phoneCharge, (err, message) => {
+                    })
+                });
+            } else{
+                console.warn(err);
+                goShopping(money, (err, message) => {
+                    if (!err) {
+                        isFood = true;
+                        money = money - 200;
+                        time -= 30;
+        
+                        console.log(message);
+
+                        programming(time, (err, message) => {
                             if (!err) {
                                 console.log(message);
 
-                            } else{
-                                console.log(err);
+                            } else{                                
+                                console.warn(message);
                             }
-                        })
-                    });
-                } else{
-                    console.warn(err);
-                    goShopping(money, (err, message) => {
-                        if (!err) {
-                            isFood = true;
-                            money = money - 200;
-                            time -= 30;
-                        
-                            console.log(message);
-
-                            programming(time, (err, message) => {
+                            
+                            sleepOrAnime(phoneCharge, (err, message) => {
                                 if (!err) {
                                     console.log(message);
 
-                                } else{                                
-                                    console.warn(message);
+                                } else{
+                                    console.log(err);
+                                }
+                            })
+                            
+                        });
+
+                    } else{
+                        console.error(err);
+                        goWork(money, (err, message) => {
+                            if (!err) {
+                                console.log(message);
+                            } else{
+                                console.log(message);
+                            }
+                            programming(time, (err, message) => {
+                                if (!err) {
+                                    console.log(message);
+                                } else{
+                                    console.warn(err);
+                                
                                 }
                             
                                 sleepOrAnime(phoneCharge, (err, message) => {
                                     if (!err) {
                                         console.log(message);
-
                                     } else{
                                         console.log(err);
                                     }
                                 })
-                            
                             });
-
-                        } else{
-                            console.error(err);
-
-                            goWork(money, (err, message) => {
-                                if (!err) {
-                                    console.log(message);
-                                } else{
-                                    console.log(message);
-                                }
-                                programming(time, (err, message) => {
-                                    if (!err) {
-                                        console.log(message);
-
-                                    } else{
-                                        console.warn(err);
-                                    
-                                    }
-                                
-                                    sleepOrAnime(phoneCharge, (err, message) => {
-                                        if (!err) {
-                                            console.log(message);
-
-                                        } else{
-                                            console.log(err);
-                                        }
-                                    })
-                                });
-                            });
-                        }
-                    });
-                }
-            },1000)
+                        });
+                    }
+                });
+            }
         })
     });
 });
@@ -132,16 +123,16 @@ function checkMessages(phoneCharge, cb) {
     }, 500)
 }
 
-
-
 function checkFridge(isFood, cb) {
-    console.log('checking fridge...');
-    if (isFood) {
-        cb(null, 'im hot hungry, lets make some programms');
-    }else{
-        cb('we need to go shopping');
-    }
-}
+    setTimeout(() => {
+        console.log('checking fridge...');
+        if (isFood) {
+            cb(null, 'im hot hungry, lets make some programms');
+        }else{
+            cb('we need to go shopping');
+        }
+    },1000)
+}   
 
 function goShopping(money, cb) {
     setTimeout(() => {
